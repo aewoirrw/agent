@@ -1,0 +1,20 @@
+[
+  {
+    "name": "queryRunbookById",
+    "type": "http",
+    "method": "GET",
+    "url": "http://127.0.0.1:18080/api/runbooks/{id}",
+    "description": "按 runbook id 查询处理手册",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "runbook id" }
+      },
+      "required": ["id"]
+    },
+    "headers": {
+      "Accept": "application/json"
+    },
+    "timeout": 10
+  }
+]

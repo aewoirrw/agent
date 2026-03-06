@@ -1,0 +1,23 @@
+[
+  {
+    "name": "demo-stdio-mcp",
+    "transport": "stdio",
+    "command": "python",
+    "args": ["scripts/your_mcp_server.py"],
+    "cwd": ".",
+    "timeout": 20,
+    "env": {
+      "EXAMPLE_TOKEN": "your-token"
+    }
+  },
+  {
+    "name": "demo-sse-mcp",
+    "transport": "sse",
+    "url": "https://mcp-api.example.com",
+    "sse_endpoint": "/sse/your-endpoint",
+    "timeout": 20,
+    "headers": {
+      "Authorization": "Bearer your-token"
+    }
+  }
+]
