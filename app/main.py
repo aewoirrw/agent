@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import asyncio
 import json
+import logging
 from pathlib import Path
 from typing import Optional
 
@@ -17,20 +19,33 @@ from app.models.schemas import (
     ClearRequest,
     FileUploadRes,
     SessionInfoResponse,
+    UploadTaskStatusResponse,
 )
 from app.services.aiops_service import AiOpsService
 from app.services.dashscope_client import DashScopeClient
+from app.services.modelscope_reranker import ModelScopeReranker
 from app.services.session_store import SessionStore
 from app.services.tools import AgentTools
+from app.services.upload_task_store import UploadTaskStore
 from app.services.vector_store import VectorStore
 
 app = FastAPI(title=settings.app_name)
 
+logger = logging.getLogger(__name__)
+
 session_store = SessionStore()
 dashscope = DashScopeClient()
-vector_store = VectorStore(dashscope)
+reranker = ModelScopeReranker()
+vector_store = VectorStore(dashscope, reranker)
 aiops_service = AiOpsService()
 agent_tools = AgentTools(vector_store)
+upload_task_store = UploadTaskStore()
+runtime_tasks: set[asyncio.Task] = set()
+
+
+def _track_runtime_task(task: asyncio.Task) -> None:
+    runtime_tasks.add(task)
+    task.add_done_callback(runtime_tasks.discard)
 
 def _api_success(data):
     return ApiResponse(code=200, message='success', data=data).model_dump()
@@ -45,6 +60,37 @@ def _sse_message(msg_type: str, data, event_key: str | None = None) -> dict:
     if event_key:
         payload['eventKey'] = event_key
     return _sse_payload(payload)
+
+
+@app.on_event('startup')
+async def startup_prewarm_embedding() -> None:
+    if not settings.local_embedding_enabled:
+        logger.info('[startup] local embedding disabled')
+        return
+
+    # Strict validation: if user requires GPU and CUDA is not available,
+    # fail startup immediately instead of silently falling back.
+    dashscope.validate_local_embedding_device_or_raise()
+
+    # Start local embedding warmup in background, and expose progress via /api/startup/status
+    delay = float(getattr(settings, 'local_embedding_prewarm_delay_sec', 0.0) or 0.0)
+
+    async def _delayed_warmup():
+        if delay > 0:
+            logger.info('[startup] local embedding warmup will start after %.1fs', delay)
+            await asyncio.sleep(delay)
+        logger.info('[startup] scheduling local embedding warmup now')
+        await dashscope.prewarm_local_embedding()
+
+    _track_runtime_task(asyncio.create_task(_delayed_warmup()))
+
+
+@app.get('/api/startup/status')
+async def get_startup_status():
+    data = {
+        'localEmbedding': dashscope.local_embedding_startup_status(),
+    }
+    return JSONResponse(_api_success(data))
 
 
 @app.post('/api/chat')
@@ -292,15 +338,43 @@ async def upload(file: Optional[UploadFile] = File(default=None)):
         data = await file.read()
         target.write_bytes(data)
 
-        try:
-            await vector_store.index_file(str(target))
-        except Exception:
-            pass
+        task = upload_task_store.create_task(file.filename, str(target), len(data))
 
-        res = FileUploadRes(fileName=file.filename, filePath=str(target), fileSize=len(data))
+        async def _run_indexing_task(task_id: str, file_path: str):
+            upload_task_store.mark_running(task_id)
+
+            async def _progress_update(payload: dict):
+                upload_task_store.update(
+                    task_id,
+                    status='running',
+                    progress=payload.get('progress'),
+                    stage=payload.get('stage'),
+                    message=payload.get('message'),
+                    total_chunks=payload.get('total_chunks'),
+                    completed_chunks=payload.get('completed_chunks'),
+                )
+
+            try:
+                result = await vector_store.index_file(file_path, progress_callback=_progress_update)
+                upload_task_store.mark_success(task_id, extra=result)
+            except Exception as e:
+                upload_task_store.mark_failed(task_id, str(e))
+
+        indexing_task = asyncio.create_task(_run_indexing_task(task.task_id, str(target)))
+        _track_runtime_task(indexing_task)
+
+        res = FileUploadRes(fileName=file.filename, filePath=str(target), fileSize=len(data), taskId=task.task_id, taskStatus=task.status)
         return JSONResponse(_api_success(res.model_dump()))
     except Exception as e:
         return JSONResponse(ApiResponse(code=500, message=f'文件上传失败: {e}', data=None).model_dump(), status_code=500)
+
+
+@app.get('/api/upload/tasks/{task_id}')
+async def get_upload_task(task_id: str):
+    snapshot = upload_task_store.snapshot(task_id)
+    if snapshot is None:
+        return JSONResponse(ApiResponse(code=404, message='上传任务不存在', data=None).model_dump(), status_code=404)
+    return JSONResponse(_api_success(UploadTaskStatusResponse(**snapshot).model_dump()))
 
 
 @app.get('/milvus/health')

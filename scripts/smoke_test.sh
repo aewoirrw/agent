@@ -66,7 +66,7 @@ check_contains "POST /api/chat has answer" "$chat_resp" '"answer"'
 # 3) chat_stream (SSE)
 chat_stream_resp=$(curl -sN -X POST "$BASE_URL/api/chat_stream" \
   -H 'Content-Type: application/json' \
-  -d "{\"Id\":\"$SESSION_ID\",\"Question\":\"现在几点\"}" | head -n 30 || true)
+  -d "{\"Id\":\"$SESSION_ID\",\"Question\":\"现在几点\"}" | head -n 80 || true)
 check_contains "POST /api/chat_stream emits message" "$chat_stream_resp" 'event: message'
 check_contains "POST /api/chat_stream emits done" "$chat_stream_resp" '"type": "done"|"type":"done"'
 

@@ -42,3 +42,23 @@ class FileUploadRes(BaseModel):
     fileName: str
     filePath: str
     fileSize: int
+    taskId: Optional[str] = None
+    taskStatus: Optional[str] = None
+
+
+class UploadTaskStatusResponse(BaseModel):
+    taskId: str
+    fileName: str
+    filePath: str
+    fileSize: int
+    status: str
+    progress: int
+    stage: str
+    message: str
+    totalChunks: int = 0
+    completedChunks: int = 0
+    startedAt: int
+    finishedAt: Optional[int] = None
+    durationMs: Optional[int] = None
+    error: Optional[str] = None
+    extra: dict[str, Any] = Field(default_factory=dict)

@@ -1,0 +1,111 @@
+nohup: ignoring input
+INFO:     Started server process [222476]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:9910 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60634 - "GET /milvus/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIConnectionError('Connection error.')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_fd01698fccd542908059a7c203fe1791 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_a8fac046f329434f81163edb90460ae4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_05882e4d22aa42ef9cb05bbe25c63861 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_05882e4d22aa42ef9cb05bbe25c63861 HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:37496 - "GET /api/upload/tasks/upload_05882e4d22aa42ef9cb05bbe25c63861 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56704 - "GET /milvus/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56708 - "GET /milvus/health HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:56710 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56720 - "POST /api/chat_stream HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:54988 - "POST /api/ai_ops HTTP/1.1" 200 OK
+GLM embedding failed, use local embedding: APIRequestFailedError('Error code: 400, with error text {"error":{"code":"1211","message":"模型不存在，请检查模型代码。"}}')
+INFO:     127.0.0.1:60888 - "GET /api/chat/session/smoke-test HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60904 - "POST /api/chat/clear HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [222476]

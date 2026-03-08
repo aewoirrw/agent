@@ -42,6 +42,7 @@ HOST=0.0.0.0 PORT=9900 RELOAD=1 ./start_server.sh
 - `POST /api/chat/clear`
 - `GET /api/chat/session/{sessionId}`
 - `POST /api/upload`
+- `GET /api/upload/tasks/{taskId}`
 - `GET /milvus/health`
 
 ## 已迁移能力（第二阶段）
@@ -139,7 +140,7 @@ curl -N -X POST http://127.0.0.1:9900/api/ai_ops
 - [x] AIOps 输入拼装（alerts + logs + docs）
 - [x] AIOps 流式输出最终报告
 - [x] AIOps Planner-Executor-Replanner 闭环（基础版）
-- [x] 文件上传后自动向量化
+- [x] 文件上传后自动向量化（已优化为上传秒回 + 后台索引任务）
 - [x] Milvus 不可用自动降级内存检索
 
 ### C. 稳定性与可观测性
@@ -191,6 +192,101 @@ BASE_URL=http://127.0.0.1:9900 ./scripts/smoke_test.sh
 - `POST /api/ai_ops`（SSE）
 - `GET /api/chat/session/{id}`
 - `POST /api/chat/clear`
+
+## 上传索引优化（RAG）
+
+Python 版上传链路已优化为：
+
+- 上传接口先落盘并立即返回 `taskId`
+- embedding / 向量写入在后台异步执行
+- 前端通过任务状态接口展示进度条
+
+### 进度查询接口
+
+```bash
+curl http://127.0.0.1:9910/api/upload/tasks/{taskId}
+```
+
+返回字段包含：
+
+- `status`: `queued|running|success|failed`
+- `progress`: 0~100
+- `stage`: 当前阶段（如 `chunking` / `embedding` / `writing_vectors`）
+- `totalChunks` / `completedChunks`
+- `durationMs`
+
+## 上传优化基准采集与对比
+
+为了量化“优化后到底快了多少”，已新增两类脚本：
+
+- `scripts/benchmark_upload.py`：采集上传响应耗时 + 后台索引完成耗时，输出 CSV
+- `scripts/compare_upload_benchmarks.py`：对比两份 CSV，计算平均值 / P50 / P95 改善百分比
+
+### 1. 采集当前版本基准
+
+在项目根目录执行：
+
+```bash
+make benchmark-upload
+```
+
+默认行为：
+
+- 请求地址：`http://127.0.0.1:9910`
+- 测试文件：`python_app/uploads/upload_test.md`
+- 重复次数：`5`
+- 输出文件：`python_app/benchmark_outputs/upload_benchmark_after.csv`
+
+也可覆盖参数：
+
+```bash
+FILE=uploads/cpu_high_usage.md REPEAT=10 LABEL=after OUTPUT=benchmark_outputs/after_large.csv make benchmark-upload
+```
+
+CSV 包含字段：
+
+- `upload_response_ms`：上传接口返回耗时
+- `index_total_ms`：后台索引总耗时
+- `total_chunks` / `completed_chunks`
+- `storage_mode`
+- `status` / `error`
+
+### 1.1 冷启动说明
+
+当前版本会在服务启动后后台预热本地 embedding 模型，以降低首次上传/首次检索时的冷启动抖动。
+
+- 服务刚启动后的前几十秒内，首次索引耗时可能仍略高
+- 模型预热完成后，后续上传的 `index_total_ms` 会更稳定
+- 该优化不会影响 `/api/upload` 的秒回语义
+
+### 2. 对比优化前后结果
+
+准备两份 CSV 后执行：
+
+```bash
+make compare-upload-benchmark BEFORE=benchmark_outputs/before.csv AFTER=benchmark_outputs/upload_benchmark_after.csv
+```
+
+输出会分别展示：
+
+- Upload Response Time：接口返回时间
+- Background Index Time：后台索引时间
+
+并给出：
+
+- `avg`
+- `p50`
+- `p95`
+- `improvement=xx%`
+
+### 3. 建议对比口径
+
+建议至少保留两组数据：
+
+1. **before**：优化前同步上传/索引版本
+2. **after**：当前异步上传 + 后台 embedding/索引版本
+
+如果当前代码已经切到异步版本，建议先用同一文件、同一环境、同一重复次数采集 `after` 基线，后续再与历史 `before` 结果做对比。
 
 ## 动态外部工具（可选）
 

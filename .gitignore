@@ -5,3 +5,5 @@ __pycache__/
 *.pyo
 embedding_model/
 uploads/
+benchmark_outputs/
+embedding_model_8B

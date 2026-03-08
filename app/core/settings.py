@@ -17,10 +17,18 @@ class Settings(BaseSettings):
 
     zhipu_api_key: str = ''
     dashscope_api_key: str = 'your-api-key-here'
+    llm_base_url: str = ''
     chat_model: str = 'glm-4.7-flash'
     embedding_model: str = 'text-embedding-v4'
     local_embedding_enabled: bool = True
     local_embedding_model_path: str = './embedding_model'
+    # 本地 embedding 运行设备：'cpu' | 'cuda' | 'cuda:0' | 'auto'
+    # 当前默认值为 cuda：强制使用 GPU。
+    # 若未检测到 CUDA / GPU，则服务会直接报错，不再回退 CPU。
+    local_embedding_device: str = 'cuda'
+    # 启动时预热本地 embedding 会占用较多 CPU/IO，可能影响首屏加载。
+    # 这里提供一个轻量延迟，让服务先能更快响应静态页面与健康检查。
+    local_embedding_prewarm_delay_sec: float = 2.0
 
     milvus_uri: str = ''
     milvus_token: str = ''
@@ -30,8 +38,15 @@ class Settings(BaseSettings):
     milvus_collection: str = 'vector_store'
 
     rag_top_k: int = 3
+    rerank_enabled: bool = True
+    rerank_candidate_k: int = 8
+    rerank_timeout_sec: float = 30.0
+    modelscope_reranker_base_url: str = 'https://ms-ens-7ed58ba5-37a9.api-inference.modelscope.cn/v1'
+    modelscope_reranker_api_key: str = ''
+    modelscope_reranker_model: str = 'Qwen/Qwen3-Reranker-4B'
     document_chunk_max_size: int = 800
     document_chunk_overlap: int = 100
+    embedding_concurrency: int = 4
 
     prometheus_base_url: str = 'http://localhost:9090'
     prometheus_mock_enabled: bool = False
@@ -53,6 +68,10 @@ class Settings(BaseSettings):
 
     @property
     def llm_api_key(self) -> str:
+        if (self.llm_base_url or '').strip():
+            key = (self.dashscope_api_key or '').strip()
+            if key and key != 'your-api-key-here':
+                return key
         key = (self.zhipu_api_key or '').strip()
         if key:
             return key
