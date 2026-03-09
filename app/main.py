@@ -17,17 +17,23 @@ from app.models.schemas import (
     ChatRequest,
     ChatResponse,
     ClearRequest,
+    ContentCreatorRequest,
+    ContentCreatorResponse,
     FileUploadRes,
     SessionInfoResponse,
     UploadTaskStatusResponse,
+    XhsGenerateRequest,
+    XhsGenerateResponse,
 )
 from app.services.aiops_service import AiOpsService
+from app.services.content_creator_service import ContentCreatorService
 from app.services.dashscope_client import DashScopeClient
 from app.services.modelscope_reranker import ModelScopeReranker
 from app.services.session_store import SessionStore
 from app.services.tools import AgentTools
 from app.services.upload_task_store import UploadTaskStore
 from app.services.vector_store import VectorStore
+from app.services.xhs_agent import XhsAgentService
 
 app = FastAPI(title=settings.app_name)
 
@@ -39,6 +45,8 @@ reranker = ModelScopeReranker()
 vector_store = VectorStore(dashscope, reranker)
 aiops_service = AiOpsService()
 agent_tools = AgentTools(vector_store)
+content_creator_service = ContentCreatorService(dashscope, agent_tools)
+xhs_agent_service = XhsAgentService(dashscope)
 upload_task_store = UploadTaskStore()
 runtime_tasks: set[asyncio.Task] = set()
 
@@ -286,6 +294,83 @@ async def ai_ops():
                 yield {'event': 'message', 'data': item}
         except Exception as e:
             yield _sse_message('error', f'AI Ops 流程失败: {e}', 'assistant.error')
+
+    return EventSourceResponse(event_gen())
+
+
+@app.post('/api/content_creator')
+async def content_creator(req: ContentCreatorRequest):
+    goal = (req.goal or '').strip()
+    if not goal:
+        return JSONResponse(
+            _api_success(ContentCreatorResponse(success=False, errorMessage='goal 不能为空').model_dump())
+        )
+
+    try:
+        await agent_tools.ensure_runtime_tools()
+        result = await content_creator_service.run(
+            goal=goal,
+            platform=req.platform,
+            audience=req.audience,
+            seed_topic=req.seedTopic or '',
+            max_iterations=req.maxIterations,
+        )
+        return JSONResponse(_api_success(ContentCreatorResponse(**result).model_dump()))
+    except Exception as e:
+        return JSONResponse(
+            _api_success(ContentCreatorResponse(success=False, errorMessage=str(e)).model_dump())
+        )
+
+
+@app.post('/api/xhs/generate')
+async def generate_xhs_copywriting(req: XhsGenerateRequest):
+    topic = (req.topic or '').strip()
+    if not topic:
+        return JSONResponse(
+            _api_success(XhsGenerateResponse(success=False, errorMessage='topic 不能为空').model_dump())
+        )
+
+    try:
+        result = await xhs_agent_service.generate(topic)
+        return JSONResponse(_api_success(XhsGenerateResponse(**result).model_dump()))
+    except Exception as e:
+        return JSONResponse(
+            _api_success(XhsGenerateResponse(success=False, errorMessage=str(e)).model_dump())
+        )
+
+
+@app.post('/api/xhs/generate_stream')
+async def generate_xhs_copywriting_stream(req: XhsGenerateRequest):
+    topic = (req.topic or '').strip()
+
+    async def event_gen():
+        if not topic:
+            yield _sse_message('error', 'topic 不能为空', 'assistant.error')
+            return
+
+        try:
+            yield _sse_message('content', f'开始生成小红书文案，主题：{topic}\n', 'assistant.content.delta')
+            async for event in xhs_agent_service.stream_generate(topic):
+                event_type = str(event.get('type') or '')
+                if event_type == 'node_finished':
+                    node_name = str(event.get('node') or '')
+                    state = event.get('state') or {}
+                    yield _sse_message('xhs_step', event, 'assistant.xhs.step')
+                    yield _sse_message(
+                        'content',
+                        f'节点执行完成: {node_name}，当前迭代次数={state.get("iterations", 0)}\n',
+                        'assistant.content.delta',
+                    )
+                    continue
+
+                if event_type == 'done':
+                    yield _sse_message('xhs_result', event.get('result'), 'assistant.xhs.result')
+                    yield _sse_message('done', None, 'assistant.done')
+                    continue
+
+                yield _sse_message('xhs_event', event, 'assistant.xhs.event')
+        except Exception as e:
+            yield _sse_message('error', str(e), 'assistant.error')
 
     return EventSourceResponse(event_gen())
 

@@ -21,6 +21,49 @@ class ChatResponse(BaseModel):
     errorMessage: Optional[str] = None
 
 
+class ContentCreatorRequest(BaseModel):
+    goal: str = ''
+    platform: str = 'general'
+    audience: str = 'general'
+    seedTopic: Optional[str] = None
+    maxIterations: int = 2
+
+
+class ContentCreatorResponse(BaseModel):
+    success: bool
+    topic: str = ''
+    topicAnalysis: str = ''
+    trendKeywords: list[str] = Field(default_factory=list)
+    visualConcept: str = ''
+    imagePrompt: str = ''
+    generatedImageUrl: str = ''
+    generatedImageResult: str = ''
+    reviewFeedback: str = ''
+    reviewPassed: bool = False
+    iterationCount: int = 0
+    maxIterations: int = 0
+    summary: str = ''
+    platform: str = ''
+    audience: str = ''
+    scoutSource: str = ''
+    errorMessage: Optional[str] = None
+
+
+class XhsGenerateRequest(BaseModel):
+    topic: str = ''
+
+
+class XhsGenerateResponse(BaseModel):
+    success: bool
+    topic: str = ''
+    trendingInsights: str = ''
+    draft: str = ''
+    iterations: int = 0
+    feedback: str = ''
+    approved: bool = False
+    errorMessage: Optional[str] = None
+
+
 class ApiResponse(BaseModel):
     code: int = 200
     message: str = 'success'

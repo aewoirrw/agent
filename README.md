@@ -39,11 +39,61 @@ HOST=0.0.0.0 PORT=9900 RELOAD=1 ./start_server.sh
 - `POST /api/chat`
 - `POST /api/chat_stream` (SSE)
 - `POST /api/ai_ops` (SSE)
+- `POST /api/xhs/generate`
 - `POST /api/chat/clear`
 - `GET /api/chat/session/{sessionId}`
 - `POST /api/upload`
 - `GET /api/upload/tasks/{taskId}`
 - `GET /milvus/health`
+
+## 小红书爆款文案工作流
+
+已新增基于 LangGraph 的多智能体工作流接口：`POST /api/xhs/generate`
+
+如需实时观测节点进度，可使用流式接口：`POST /api/xhs/generate_stream`
+
+前端页面也已经提供独立入口：启动服务后，在左侧侧边栏点击“`小红书生成`”，主区域会展开专用工作台，可直接输入主题并选择“生成文案”或“流式生成”。
+
+也可以直接用脚本运行服务类，便于本地联调：`scripts/run_xhs_agent.py`
+
+请求示例：
+
+```bash
+curl -X POST http://127.0.0.1:9900/api/xhs/generate \
+	-H "Content-Type: application/json" \
+	-d '{"topic":"熬夜后如何快速恢复气色"}'
+```
+
+流式调用示例：
+
+```bash
+curl -N -X POST http://127.0.0.1:9900/api/xhs/generate_stream \
+	-H "Content-Type: application/json" \
+	-d '{"topic":"熬夜后如何快速恢复气色"}'
+```
+
+或直接运行脚本：
+
+```bash
+cd python_app
+source .venv/bin/activate
+python scripts/run_xhs_agent.py --topic "熬夜后如何快速恢复气色"
+```
+
+接口级冒烟测试脚本：`scripts/smoke_test_xhs.sh`
+
+```bash
+cd python_app
+BASE_URL=http://127.0.0.1:9900 ./scripts/smoke_test_xhs.sh
+```
+
+返回结果会包含：
+
+- `draft`: 最终打磨后的文案
+- `iterations`: 实际重写次数
+- `feedback`: Reviewer 最终反馈
+- `approved`: 是否通过审核
+- `trendingInsights`: Searcher 提炼的爆款洞察
 
 ## 已迁移能力（第二阶段）
 

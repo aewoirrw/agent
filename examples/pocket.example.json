@@ -1,0 +1,7 @@
+{
+  "target_id": "PDBBIND:1ABC",
+  "pocket_id": "pocket_0",
+  "pocket_description": "Example pocket: polar edge, hydrophobic core; has potential H-bond donors near rim.",
+  "residues": ["ASP189", "GLY216", "SER195"],
+  "center_xyz": [12.3, -4.5, 8.9]
+}
